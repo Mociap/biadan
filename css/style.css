@@ -1023,9 +1023,65 @@ h3 {
 }
 
 @media (max-width: 640px) {
+  .secao {
+    padding: 3.6rem .85rem;
+  }
+
   .grade {
-    grid-template-columns: minmax(0, 265px);
-    justify-content: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 100%;
+    gap: .75rem;
+  }
+
+  .card {
+    padding: .65rem .55rem .85rem;
+    border-radius: 12px;
+  }
+
+  .card-img {
+    margin-bottom: .55rem;
+    border-radius: 8px;
+  }
+
+  .badge {
+    font-size: .56rem;
+    padding: .18rem .45rem;
+    top: 6px;
+    left: 6px;
+  }
+
+  .badge-cota,
+  .badge-esgotado {
+    left: auto;
+    right: 6px;
+  }
+
+  .card h3 {
+    font-size: .82rem;
+    line-height: 1.25;
+    min-height: 2.3em;
+    margin-bottom: .25rem;
+  }
+
+  .card-desc {
+    font-size: .72rem;
+    line-height: 1.35;
+    margin-bottom: .55rem;
+  }
+
+  .preco {
+    font-size: .95rem;
+    margin-bottom: .55rem;
+  }
+
+  .preco small {
+    font-size: .65rem;
+  }
+
+  .card .btn {
+    padding: .48rem .4rem;
+    font-size: .76rem;
+    border-radius: 8px;
   }
 
   .topbar {
@@ -1086,5 +1142,28 @@ h3 {
   .deco-ramo-l {
     opacity: .45;
     width: 100px;
+  }
+}
+
+@media (max-width: 380px) {
+  .grade {
+    gap: .55rem;
+  }
+
+  .card {
+    padding: .55rem .45rem .75rem;
+  }
+
+  .card h3 {
+    font-size: .78rem;
+  }
+
+  .preco {
+    font-size: .88rem;
+  }
+
+  .card .btn {
+    font-size: .72rem;
+    padding: .44rem .35rem;
   }
 }
