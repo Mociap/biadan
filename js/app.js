@@ -496,13 +496,14 @@
         .trim();
       const val = parseFloat(raw) || 0;
 
-      if (val < 150) {
+      const minAvulso = 200;
+      if (val < minAvulso) {
         if (erroAvulso) erroAvulso.classList.remove("oculto");
         if (inputAvulso) {
           inputAvulso.classList.add("erro-campo");
           inputAvulso.focus();
         }
-        toast("O valor mínimo para contribuição é de R$ 150,00.");
+        toast(`O valor mínimo para contribuição é de ${brl(minAvulso)}.`);
         return;
       }
 
