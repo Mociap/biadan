@@ -839,47 +839,6 @@ h3 {
   font-size: .84rem;
 }
 
-/* Explicação clara de presentes compartilhados / cotas */
-.preco-compartilhado {
-  margin-bottom: .65rem;
-}
-
-.cota-info {
-  margin-top: .4rem;
-  padding: .5rem .55rem;
-  background: rgba(27, 54, 93, .06);
-  border: 1px dashed rgba(27, 54, 93, .3);
-  border-radius: 8px;
-  text-align: center;
-}
-
-.cota-destaque {
-  display: block;
-  font-size: .74rem;
-  font-weight: 700;
-  color: var(--blue-dark);
-  letter-spacing: .02em;
-}
-
-.cota-explicacao {
-  display: block;
-  font-size: .69rem;
-  color: var(--taupe);
-  line-height: 1.35;
-  margin-top: .2rem;
-}
-
-.cota-restantes {
-  display: inline-block;
-  font-size: .68rem;
-  color: var(--blue);
-  font-weight: 600;
-  margin-top: .3rem;
-  background: rgba(255, 255, 255, .92);
-  padding: .15rem .5rem;
-  border-radius: 4px;
-}
-
 /* ===== Valores Avulsos ===== */
 .avulso-card {
   max-width: 860px;
@@ -1435,25 +1394,6 @@ h3 {
     padding: .48rem .4rem;
     font-size: .76rem;
     border-radius: 8px;
-  }
-
-  .cota-info {
-    padding: .35rem .35rem;
-    margin-top: .3rem;
-  }
-
-  .cota-destaque {
-    font-size: .65rem;
-  }
-
-  .cota-explicacao {
-    font-size: .62rem;
-    line-height: 1.25;
-  }
-
-  .cota-restantes {
-    font-size: .62rem;
-    padding: .1rem .35rem;
   }
 
   .avulso-card {

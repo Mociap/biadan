@@ -211,39 +211,27 @@
       const esgotado = restantes <= 0;
       const unit = valorUnitario(p);
       const noCarrinho = carrinho.find((it) => it.id === p.id);
-      const badgeCota = esgotado
-        ? `<span class="badge badge-esgotado">${cota ? "Partes esgotadas" : "Esgotado"}</span>`
-        : cota
-          ? `<span class="badge badge-cota" title="Presente compartilhado: você contribui com 1 ou mais partes">Presente Compartilhado</span>`
-          : "";
+      const badgeEsgotado = esgotado
+        ? `<span class="badge badge-esgotado">${cota ? "Cotas esgotadas" : "Esgotado"}</span>`
+        : "";
       const btnTexto = esgotado
-        ? cota
-          ? "Partes esgotadas"
-          : "Esgotado"
+        ? (cota ? "Cotas esgotadas" : "Esgotado")
         : noCarrinho
-          ? `No carrinho (${noCarrinho.qtd} ${cota ? (noCarrinho.qtd > 1 ? "partes" : "parte") : "unid."}) · +1`
-          : (cota ? "Presentear com 1 parte" : "Presentear");
+          ? `No carrinho (${noCarrinho.qtd}) · +1`
+          : "Presentear";
       const card = document.createElement("article");
       card.className = `card${esgotado ? " esgotado" : ""}`;
       card.innerHTML = `
         <div class="card-img">
           <img src="${p.imagem}" alt="${p.nome}" loading="lazy" onerror="this.src='img/foto-placeholder.svg'" />
           <span class="badge">${CATS[p.categoria] || ""}</span>
-          ${badgeCota}
+          ${badgeEsgotado}
         </div>
         <h3>${p.nome}</h3>
         <p class="card-desc">${p.descricao}</p>
-        <div class="preco ${cota ? "preco-compartilhado" : ""}">
+        <div class="preco">
           <span class="preco-valor">${brl(unit)}</span>
-          ${
-            cota
-              ? `<div class="cota-info">
-                   <span class="cota-destaque">Sua contribuição (1 de ${p.cotas} partes)</span>
-                   <small class="cota-explicacao">Vários convidados podem se unir para presentear este item juntos! Você contribui com ${brl(unit)} (total do item: ${brl(p.valor)}).</small>
-                   ${cotasInfo[p.id] ? `<span class="cota-restantes">Restam <b>${restantes}</b> de ${p.cotas} partes</span>` : ""}
-                 </div>`
-              : `<small>valor do presente</small>`
-          }
+          <small>${cota ? `por cota · total ${brl(p.valor)}` : "valor do presente"}</small>
         </div>
         <button class="btn ${noCarrinho && !esgotado ? "btn-contorno" : ""}" ${esgotado ? "disabled" : ""}>${btnTexto}</button>`;
       if (!esgotado) card.querySelector(".btn").addEventListener("click", () => adicionarAoCarrinho(p));
@@ -335,8 +323,7 @@
         ${it.imagem ? `<img src="${it.imagem}" alt="" />` : ""}
         <div class="c-info">
           <strong>${it.nome}</strong>
-          <small>${brl(it.unitario)}${it.isCota ? " por parte" : ""}</small>
-          ${it.isCota ? `<small style="display:block;color:var(--blue);font-size:.72rem;">Presente compartilhado (${it.qtd} ${it.qtd > 1 ? "partes" : "parte"})</small>` : ""}
+          <small>${brl(it.unitario)}${it.isCota ? " por cota" : ""}</small>
         </div>
         <div class="c-qty">
           <button type="button" class="menos" aria-label="Menos">−</button>
