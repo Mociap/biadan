@@ -44,8 +44,8 @@ const CONFIG = {
     "É uma emoção única e indescritível tê-los ao nosso lado e poder partilhar com vocês toda a felicidade dessa nova etapa em nossas vidas: nosso casamento! Por isso, desejamos tê-los como testemunhas do nosso sonho e do nosso amor!",
   ],
   padrinhos: [
-    { nomes: "Euclécio", foto: "img/padrinho-placeholder.svg" },
-    { nomes: "Odete", foto: "img/padrinho-placeholder.svg" },
+    { nomes: "Euclécio", foto: "img/Padrinhos/Euclecio.jpeg" },
+    { nomes: "Odete", foto: "img/Padrinhos/Odete.jpeg" },
     { nomes: "Everson", foto: "img/padrinho-placeholder.svg" },
     { nomes: "Maria Lenir", foto: "img/padrinho-placeholder.svg" },
     { nomes: "Eduardo e Nicolly", foto: "img/padrinho-placeholder.svg" },
