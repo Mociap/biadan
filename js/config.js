@@ -70,6 +70,15 @@ const CONFIG = {
 const PRESENTES = [
   // ---- Destaques variados / Sugestão dos noivos ----
   {
+    id: "lua-de-mel",
+    nome: "Lua de Mel — Chalé Aconchegante na Serra",
+    descricao: "Ajude os noivos com uma parte da nossa sonhada viagem de lua de mel em um chalé romântico e acolhedor.",
+    imagem: "img/chale-aconchegante.jpg",
+    valor: 3000,
+    cotas: 6,
+    categoria: "viagem",
+  },
+  {
     id: "panelas",
     nome: "Jogo de Panelas Antiaderentes (5 peças)",
     descricao: "Conjunto antiaderente completo para as primeiras receitas a dois.",
@@ -147,9 +156,27 @@ const PRESENTES = [
     categoria: "casa",
   },
   {
+    id: "fogao",
+    nome: "Fogão 4 Bocas com Forno",
+    descricao: "Fogão moderno para preparar receitas e momentos especiais na nossa nova cozinha.",
+    imagem: "img/fogao.jpg",
+    valor: 900,
+    limite: 3,
+    categoria: "cozinha",
+  },
+  {
+    id: "ventilador",
+    nome: "Ventilador de Coluna",
+    descricao: "Ventilador potente e silencioso para garantir muito conforto e frescor em nossa casa.",
+    imagem: "img/ventilador.jpg",
+    valor: 220,
+    limite: 6,
+    categoria: "casa",
+  },
+  {
     id: "jantar-20",
-    nome: "Aparelho de Jantar (20 peças)",
-    descricao: "Aparelho de porcelana com 20 peças para o dia a dia e pequenos jantares.",
+    nome: "Jogo de Pratos (20 peças)",
+    descricao: "Conjunto de pratos de porcelana com 20 peças para o dia a dia e pequenos jantares.",
     imagem: "img/jantar.jpg",
     valor: 260,
     categoria: "cozinha",
@@ -265,8 +292,8 @@ const PRESENTES = [
   },
   {
     id: "jantar-42",
-    nome: "Aparelho de Jantar Completo (42 peças)",
-    descricao: "Jogo de porcelana completo para receber toda a família e os amigos.",
+    nome: "Jogo de Pratos Completo (42 peças)",
+    descricao: "Conjunto completo de pratos de porcelana para receber toda a família e os amigos.",
     imagem: "img/jantar-completo.jpg",
     valor: 460,
     categoria: "cozinha",

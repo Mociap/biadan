@@ -839,6 +839,183 @@ h3 {
   font-size: .84rem;
 }
 
+/* Explicação clara de presentes compartilhados / cotas */
+.preco-compartilhado {
+  margin-bottom: .65rem;
+}
+
+.cota-info {
+  margin-top: .4rem;
+  padding: .5rem .55rem;
+  background: rgba(78, 115, 150, .07);
+  border: 1px dashed rgba(78, 115, 150, .35);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.cota-destaque {
+  display: block;
+  font-size: .74rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  letter-spacing: .02em;
+}
+
+.cota-explicacao {
+  display: block;
+  font-size: .69rem;
+  color: var(--taupe);
+  line-height: 1.35;
+  margin-top: .2rem;
+}
+
+.cota-restantes {
+  display: inline-block;
+  font-size: .68rem;
+  color: var(--blue);
+  font-weight: 600;
+  margin-top: .3rem;
+  background: rgba(255, 255, 255, .92);
+  padding: .15rem .5rem;
+  border-radius: 4px;
+}
+
+/* ===== Valores Avulsos ===== */
+.avulso-card {
+  max-width: 860px;
+  margin: 3.5rem auto 0;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(95, 85, 75, .08);
+  padding: 2.2rem 2.4rem;
+  display: grid;
+  grid-template-columns: 1.15fr 0.95fr;
+  gap: 2rem;
+  align-items: center;
+  text-align: left;
+  position: relative;
+  overflow: hidden;
+}
+
+.avulso-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--blue) 0%, var(--blue-dark) 100%);
+}
+
+.avulso-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+}
+
+.avulso-icone {
+  flex-shrink: 0;
+  color: var(--blue);
+  margin-top: .2rem;
+}
+
+.avulso-header h3 {
+  font-family: var(--serif);
+  font-size: 1.45rem;
+  color: var(--taupe-dark);
+  margin-bottom: .45rem;
+  line-height: 1.25;
+}
+
+.avulso-header p {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.avulso-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: .9rem;
+}
+
+.avulso-campo label {
+  display: block;
+  font-size: .84rem;
+  font-weight: 700;
+  color: var(--taupe-dark);
+  margin-bottom: .4rem;
+}
+
+.avulso-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.avulso-prefixo {
+  position: absolute;
+  left: 14px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--blue-dark);
+  pointer-events: none;
+}
+
+.avulso-input-wrapper input {
+  width: 100%;
+  padding: .75rem 1rem .75rem 2.7rem;
+  font-family: var(--sans);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--taupe-dark);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fdfcfb;
+  transition: border-color .2s, box-shadow .2s;
+  box-sizing: border-box;
+}
+
+.avulso-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(78, 115, 150, .18);
+  background: #fff;
+}
+
+.avulso-input-wrapper input.erro-campo {
+  border-color: #d63031 !important;
+  box-shadow: 0 0 0 3px rgba(214, 48, 49, .18) !important;
+  animation: balancoErro .3s ease;
+}
+
+@keyframes balancoErro {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.avulso-erro {
+  display: block;
+  font-size: .78rem;
+  color: #c0392b;
+  font-weight: 600;
+  margin-top: .4rem;
+  line-height: 1.35;
+}
+
+.avulso-erro.oculto {
+  display: none;
+}
+
+.avulso-corpo .btn {
+  width: 100%;
+  padding: .85rem 1.2rem;
+  font-size: .95rem;
+}
+
 /* ===== Confirme sua Presença (RSVP) ===== */
 .rsvp {
   max-width: 520px;
@@ -1254,6 +1431,59 @@ h3 {
     padding: .48rem .4rem;
     font-size: .76rem;
     border-radius: 8px;
+  }
+
+  .cota-info {
+    padding: .35rem .35rem;
+    margin-top: .3rem;
+  }
+
+  .cota-destaque {
+    font-size: .65rem;
+  }
+
+  .cota-explicacao {
+    font-size: .62rem;
+    line-height: 1.25;
+  }
+
+  .cota-restantes {
+    font-size: .62rem;
+    padding: .1rem .35rem;
+  }
+
+  .avulso-card {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    padding: 1.6rem 1.2rem;
+    margin-top: 2.2rem;
+  }
+
+  .avulso-header {
+    gap: .8rem;
+  }
+
+  .avulso-header h3 {
+    font-size: 1.25rem;
+  }
+
+  .avulso-header p {
+    font-size: .82rem;
+  }
+
+  .avulso-input-wrapper input {
+    font-size: 1.05rem;
+    padding: .65rem .85rem .65rem 2.4rem;
+  }
+
+  .avulso-prefixo {
+    left: 12px;
+    font-size: 1rem;
+  }
+
+  .avulso-corpo .btn {
+    padding: .75rem 1rem;
+    font-size: .88rem;
   }
 
   .topbar {

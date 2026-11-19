@@ -4,7 +4,7 @@
 (() => {
   const $ = (id) => document.getElementById(id);
   const brl = (v) => v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
-  const CATS = { casa: "Casa", cozinha: "Cozinha" };
+  const CATS = { casa: "Casa", cozinha: "Cozinha", viagem: "Lua de Mel" };
   const fuso = { timeZone: "America/Recife" };
 
   /* ---------- Cabeçalho, fotos e textos ---------- */
@@ -212,17 +212,17 @@
       const unit = valorUnitario(p);
       const noCarrinho = carrinho.find((it) => it.id === p.id);
       const badgeCota = esgotado
-        ? `<span class="badge badge-esgotado">${cota ? "Cotas esgotadas" : "Esgotado"}</span>`
+        ? `<span class="badge badge-esgotado">${cota ? "Partes esgotadas" : "Esgotado"}</span>`
         : cota
-          ? `<span class="badge badge-cota">${cotasInfo[p.id] ? `Restam ${restantes} de ${p.cotas}` : `Cota 1 de ${p.cotas}`}</span>`
+          ? `<span class="badge badge-cota" title="Presente compartilhado: você contribui com 1 ou mais partes">Presente Compartilhado</span>`
           : "";
       const btnTexto = esgotado
         ? cota
-          ? "Cotas esgotadas"
+          ? "Partes esgotadas"
           : "Esgotado"
         : noCarrinho
-          ? `No carrinho (${noCarrinho.qtd}) · +1`
-          : "Presentear";
+          ? `No carrinho (${noCarrinho.qtd} ${cota ? (noCarrinho.qtd > 1 ? "partes" : "parte") : "unid."}) · +1`
+          : (cota ? "Presentear com 1 parte" : "Presentear");
       const card = document.createElement("article");
       card.className = `card${esgotado ? " esgotado" : ""}`;
       card.innerHTML = `
@@ -233,9 +233,17 @@
         </div>
         <h3>${p.nome}</h3>
         <p class="card-desc">${p.descricao}</p>
-        <div class="preco">
-          ${brl(unit)}
-          ${cota ? `<small>por cota · ${p.cotas} cotas (total ${brl(p.valor)})</small>` : ""}
+        <div class="preco ${cota ? "preco-compartilhado" : ""}">
+          <span class="preco-valor">${brl(unit)}</span>
+          ${
+            cota
+              ? `<div class="cota-info">
+                   <span class="cota-destaque">Sua contribuição (1 de ${p.cotas} partes)</span>
+                   <small class="cota-explicacao">Vários convidados podem se unir para presentear este item juntos! Você contribui com ${brl(unit)} (total do item: ${brl(p.valor)}).</small>
+                   ${cotasInfo[p.id] ? `<span class="cota-restantes">Restam <b>${restantes}</b> de ${p.cotas} partes</span>` : ""}
+                 </div>`
+              : `<small>valor do presente</small>`
+          }
         </div>
         <button class="btn ${noCarrinho && !esgotado ? "btn-contorno" : ""}" ${esgotado ? "disabled" : ""}>${btnTexto}</button>`;
       if (!esgotado) card.querySelector(".btn").addEventListener("click", () => adicionarAoCarrinho(p));
@@ -278,13 +286,13 @@
   function adicionarAoCarrinho(p) {
     const limite = Math.max(0, cotasRestantes(p));
     if (limite === 0) {
-      toast(p.cotas > 1 ? "As cotas deste presente já foram preenchidas." : "Este presente já foi esgotado.");
+      toast(p.cotas > 1 ? "Todas as partes deste presente já foram preenchidas." : "Este presente já foi esgotado.");
       return;
     }
     const existente = carrinho.find((it) => it.id === p.id);
     if (existente) {
       if (!existente.max || existente.qtd < existente.max) existente.qtd++;
-      else toast(`Limite de ${existente.max} ${p.cotas > 1 ? "cotas" : "unidades"} atingido para este item.`);
+      else toast(`Limite de ${existente.max} ${p.cotas > 1 ? "partes" : "unidades"} atingido para este item.`);
     } else {
       carrinho.push({
         id: p.id,
@@ -293,6 +301,7 @@
         unitario: valorUnitario(p),
         qtd: 1,
         max: limite,
+        isCota: p.cotas > 1,
       });
     }
     atualizarBotaoCarrinho();
@@ -326,7 +335,8 @@
         ${it.imagem ? `<img src="${it.imagem}" alt="" />` : ""}
         <div class="c-info">
           <strong>${it.nome}</strong>
-          <small>${brl(it.unitario)} cada</small>
+          <small>${brl(it.unitario)}${it.isCota ? " por parte" : ""}</small>
+          ${it.isCota ? `<small style="display:block;color:var(--blue);font-size:.72rem;">Presente compartilhado (${it.qtd} ${it.qtd > 1 ? "partes" : "parte"})</small>` : ""}
         </div>
         <div class="c-qty">
           <button type="button" class="menos" aria-label="Menos">−</button>
@@ -444,6 +454,87 @@
       btn.textContent = "Pagar com PagBank";
     }
   });
+
+  /* ---------- Valores Avulsos (mínimo de R$ 150) ---------- */
+  const inputAvulso = $("valorAvulso");
+  const erroAvulso = $("avulsoErro");
+  const btnAvulso = $("btnAvulso");
+
+  function formatarMoedaAvulso(e) {
+    let v = e.target.value.replace(/\D/g, "");
+    if (!v) {
+      e.target.value = "";
+      if (erroAvulso) erroAvulso.classList.add("oculto");
+      if (inputAvulso) inputAvulso.classList.remove("erro-campo");
+      return;
+    }
+    const n = (parseInt(v, 10) / 100).toFixed(2);
+    const partes = n.split(".");
+    partes[0] = partes[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    e.target.value = partes.join(",");
+  }
+
+  if (inputAvulso) {
+    inputAvulso.addEventListener("input", formatarMoedaAvulso);
+    inputAvulso.addEventListener("focus", () => {
+      if (erroAvulso) erroAvulso.classList.add("oculto");
+      inputAvulso.classList.remove("erro-campo");
+    });
+    inputAvulso.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        if (btnAvulso) btnAvulso.click();
+      }
+    });
+  }
+
+  if (btnAvulso) {
+    btnAvulso.addEventListener("click", () => {
+      const raw = (inputAvulso ? inputAvulso.value : "")
+        .replace(/\./g, "")
+        .replace(",", ".")
+        .trim();
+      const val = parseFloat(raw) || 0;
+
+      if (val < 150) {
+        if (erroAvulso) erroAvulso.classList.remove("oculto");
+        if (inputAvulso) {
+          inputAvulso.classList.add("erro-campo");
+          inputAvulso.focus();
+        }
+        toast("O valor mínimo para contribuição é de R$ 150,00.");
+        return;
+      }
+
+      if (erroAvulso) erroAvulso.classList.add("oculto");
+      if (inputAvulso) {
+        inputAvulso.classList.remove("erro-campo");
+        inputAvulso.value = "";
+      }
+
+      const idAvulso = "valor-avulso";
+      const existente = carrinho.find((it) => it.id === idAvulso);
+      const descItem = `Contribuição com Valor Avulso (${brl(val)})`;
+      if (existente) {
+        existente.unitario = val;
+        existente.nome = descItem;
+      } else {
+        carrinho.push({
+          id: idAvulso,
+          nome: descItem,
+          imagem: "img/chale-aconchegante.jpg",
+          unitario: val,
+          qtd: 1,
+          max: 1,
+          isAvulso: true,
+        });
+      }
+
+      atualizarBotaoCarrinho();
+      abrirModal(1);
+      toast(`Contribuição de ${brl(val)} adicionada ao seu carrinho!`);
+    });
+  }
 
   async function verificarRetornoPagBank() {
     const params = new URLSearchParams(window.location.search);

@@ -197,9 +197,35 @@
       <button class="filtro" data-cat="casa">Casa</button>
       <button class="filtro" data-cat="cozinha">Cozinha</button>
       <button class="filtro" data-cat="cotas">Cotas</button>
+      <button class="filtro" data-cat="viagem">Lua de Mel</button>
     </div>
 
     <div class="grade" id="grade"></div>
+
+    <!-- ===== BLOCO: VALORES AVULSOS ===== -->
+    <div class="avulso-card" id="blocoValorAvulso">
+      <div class="avulso-header">
+        <svg viewBox="0 0 24 24" width="30" height="30" aria-hidden="true" class="avulso-icone">
+          <path fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+            d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+        <div>
+          <h3>Valores Avulsos</h3>
+          <p>Deseja presentear os noivos com outro valor de sua preferência? Fique à vontade para contribuir com a quantia que desejar para o nosso novo começo!</p>
+        </div>
+      </div>
+      <div class="avulso-corpo">
+        <div class="avulso-campo">
+          <label for="valorAvulso">Digite o valor que deseja enviar:</label>
+          <div class="avulso-input-wrapper">
+            <span class="avulso-prefixo">R$</span>
+            <input type="text" id="valorAvulso" placeholder="0,00" inputmode="numeric" />
+          </div>
+          <span class="avulso-erro oculto" id="avulsoErro">O valor mínimo para contribuição é de R$ 150,00.</span>
+        </div>
+        <button type="button" class="btn" id="btnAvulso">Contribuir com este valor</button>
+      </div>
+    </div>
   </section>
 
   <!-- ===== CONFIRME SUA PRESENÇA ===== -->
