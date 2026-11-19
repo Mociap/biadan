@@ -158,7 +158,20 @@ function registrarPresenteConfirmado(ss, props, referenceId) {
     return { recorded: false, alreadyProcessed: false };
   }
 
-  const sheetPres = ss.getSheetByName(ABA_PRESENTES);
+  let sheetPres = ss.getSheetByName(ABA_PRESENTES);
+  if (!sheetPres) {
+    sheetPres = ss.insertSheet(ABA_PRESENTES);
+    sheetPres.appendRow([
+      "Data/Hora",
+      "Quem comprou",
+      "Presente",
+      "Quantidade",
+      "Valor (R$)",
+      "Recado dos noivos",
+      "Status Pagamento",
+      "Detalhes / IDs",
+    ]);
+  }
   const lastPres = sheetPres.getLastRow();
   if (lastPres >= 2) {
     const existing = sheetPres.getRange(2, 8, lastPres - 1, 1).getValues();
@@ -419,7 +432,18 @@ function doPost(e) {
         return jsonResposta({ ok: true, duplicado: true });
       }
 
-      const sheet = ss.getSheetByName(ABA_CONFIRMACOES);
+      let sheet = ss.getSheetByName(ABA_CONFIRMACOES);
+      if (!sheet) {
+        sheet = ss.insertSheet(ABA_CONFIRMACOES);
+        sheet.appendRow([
+          "Data/Hora",
+          "Nome",
+          "Confirmou Presença",
+          "Adultos",
+          "Crianças",
+          "Observações",
+        ]);
+      }
       sheet.appendRow([
         agora,
         nome,
