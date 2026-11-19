@@ -144,14 +144,73 @@
   contagem(true);
   setInterval(() => contagem(false), 1000);
 
-  /* Barra fixa ao rolar + menu mobile */
+  /* Barra fixa ao rolar */
   window.addEventListener("scroll", () => {
     $("topbar").classList.toggle("visivel", window.scrollY > 360);
   });
-  $("menuToggle").addEventListener("click", () => $("menu").classList.toggle("aberto"));
-  $("menu").querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => $("menu").classList.remove("aberto"))
-  );
+
+  /* Menu Mobile */
+  const menuToggle = $("menuToggle");
+  const menuMobile = $("menuMobile");
+  const menuBackdrop = $("menuBackdrop");
+  const menuMobileFechar = $("menuMobileFechar");
+
+  function abrirMenuMobile() {
+    if (menuMobile) {
+      menuMobile.classList.add("aberto");
+      menuMobile.setAttribute("aria-hidden", "false");
+    }
+    if (menuBackdrop) {
+      menuBackdrop.classList.add("ativo");
+      menuBackdrop.setAttribute("aria-hidden", "false");
+    }
+    if (menuToggle) {
+      menuToggle.classList.add("ativo");
+      menuToggle.setAttribute("aria-expanded", "true");
+    }
+    document.body.classList.add("menu-aberto-travado");
+  }
+
+  function fecharMenuMobile() {
+    if (menuMobile) {
+      menuMobile.classList.remove("aberto");
+      menuMobile.setAttribute("aria-hidden", "true");
+    }
+    if (menuBackdrop) {
+      menuBackdrop.classList.remove("ativo");
+      menuBackdrop.setAttribute("aria-hidden", "true");
+    }
+    if (menuToggle) {
+      menuToggle.classList.remove("ativo");
+      menuToggle.setAttribute("aria-expanded", "false");
+    }
+    document.body.classList.remove("menu-aberto-travado");
+  }
+
+  if (menuToggle) {
+    menuToggle.addEventListener("click", () => {
+      if (menuMobile && menuMobile.classList.contains("aberto")) {
+        fecharMenuMobile();
+      } else {
+        abrirMenuMobile();
+      }
+    });
+  }
+
+  if (menuMobileFechar) menuMobileFechar.addEventListener("click", fecharMenuMobile);
+  if (menuBackdrop) menuBackdrop.addEventListener("click", fecharMenuMobile);
+
+  if (menuMobile) {
+    menuMobile.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", fecharMenuMobile);
+    });
+  }
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menuMobile && menuMobile.classList.contains("aberto")) {
+      fecharMenuMobile();
+    }
+  });
 
   /* ---------- Lista de Presentes e Carrinho ---------- */
   let filtro = "todos";
@@ -212,10 +271,10 @@
       const unit = valorUnitario(p);
       const noCarrinho = carrinho.find((it) => it.id === p.id);
       const badgeEsgotado = esgotado
-        ? `<span class="badge badge-esgotado">${cota ? "Cotas esgotadas" : "Esgotado"}</span>`
+        ? `<span class="badge badge-esgotado">${cota ? "Partes esgotadas" : "Esgotado"}</span>`
         : "";
       const btnTexto = esgotado
-        ? (cota ? "Cotas esgotadas" : "Esgotado")
+        ? (cota ? "Partes esgotadas" : "Esgotado")
         : noCarrinho
           ? `No carrinho (${noCarrinho.qtd}) · +1`
           : "Presentear";
@@ -231,7 +290,7 @@
         <p class="card-desc">${p.descricao}</p>
         <div class="preco">
           <span class="preco-valor">${brl(unit)}</span>
-          <small>${cota ? `por cota · total ${brl(p.valor)}` : "valor do presente"}</small>
+          <small>${cota ? `1 de ${p.cotas} partes · valor total ${brl(p.valor)}` : "valor do presente"}</small>
         </div>
         <button class="btn ${noCarrinho && !esgotado ? "btn-contorno" : ""}" ${esgotado ? "disabled" : ""}>${btnTexto}</button>`;
       if (!esgotado) card.querySelector(".btn").addEventListener("click", () => adicionarAoCarrinho(p));
@@ -323,7 +382,7 @@
         ${it.imagem ? `<img src="${it.imagem}" alt="" />` : ""}
         <div class="c-info">
           <strong>${it.nome}</strong>
-          <small>${brl(it.unitario)}${it.isCota ? " por cota" : ""}</small>
+          <small>${brl(it.unitario)}${it.isCota ? " por parte" : ""}</small>
         </div>
         <div class="c-qty">
           <button type="button" class="menos" aria-label="Menos">−</button>

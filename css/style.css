@@ -168,15 +168,190 @@ h3 {
   text-decoration: none;
 }
 
+/* ===== Botão Hambúrguer e Menu Mobile ===== */
 .menu-toggle {
   display: none;
-  background: none;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: .35rem .65rem;
-  font-size: 1.2rem;
-  color: var(--taupe-dark);
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(27, 54, 93, 0.25);
+  border-radius: 9px;
+  width: 42px;
+  height: 42px;
+  padding: 0;
   cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(16, 35, 63, 0.08);
+  transition: all .2s ease;
+  z-index: 101;
+}
+
+.menu-toggle:hover {
+  background: #ffffff;
+  border-color: var(--blue);
+}
+
+.hamb-box {
+  width: 20px;
+  height: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.hamb-line {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: var(--blue-dark);
+  border-radius: 2px;
+  transition: transform .25s ease, opacity .2s ease;
+  transform-origin: center;
+}
+
+.menu-toggle.ativo .hamb-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle.ativo .hamb-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.menu-toggle.ativo .hamb-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Backdrop Mobile */
+.menu-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(16, 35, 63, 0.45);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 98;
+  opacity: 0;
+  transition: opacity .25s ease;
+  pointer-events: none;
+}
+
+.menu-backdrop.ativo {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Menu Mobile Dropdown / Drawer */
+.menu-mobile {
+  display: none;
+  position: fixed;
+  top: 60px;
+  left: 14px;
+  right: 14px;
+  max-width: 420px;
+  margin: 0 auto;
+  background: #ffffff;
+  border: 1px solid rgba(27, 54, 93, 0.16);
+  border-radius: 16px;
+  box-shadow: 0 16px 40px rgba(16, 35, 63, 0.22);
+  z-index: 99;
+  padding: .85rem 1rem 1.1rem;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.97);
+  pointer-events: none;
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1), opacity .22s ease;
+}
+
+.menu-mobile.aberto {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.menu-mobile-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: .6rem;
+  border-bottom: 1px solid rgba(27, 54, 93, 0.08);
+  margin-bottom: .4rem;
+}
+
+.menu-mobile-marca {
+  font-family: var(--script);
+  font-size: 1.65rem;
+  color: var(--blue-dark);
+}
+
+.menu-mobile-fechar {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--taupe);
+  cursor: pointer;
+  padding: .2rem .4rem;
+  border-radius: 6px;
+  transition: color .2s;
+}
+
+.menu-mobile-fechar:hover {
+  color: var(--blue-dark);
+}
+
+.menu-mobile-links {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-mobile-links a {
+  display: flex;
+  align-items: center;
+  padding: .72rem .6rem;
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--blue-dark);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(27, 54, 93, 0.06);
+  border-radius: 8px;
+  transition: background .15s, color .15s, padding-left .15s;
+}
+
+.menu-mobile-links a:hover,
+.menu-mobile-links a:active {
+  background: rgba(27, 54, 93, 0.06);
+  color: var(--blue);
+  padding-left: .85rem;
+}
+
+.menu-mobile-dot {
+  color: #cca136;
+  font-size: 1rem;
+  margin-right: .65rem;
+  line-height: 1;
+}
+
+.menu-mobile-destaque {
+  margin-top: .6rem;
+  background: var(--blue-dark) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-align: center;
+  justify-content: center !important;
+  padding: .75rem 1rem !important;
+  border-radius: 10px !important;
+  border-bottom: none !important;
+  box-shadow: 0 4px 12px rgba(27, 54, 93, 0.25);
+}
+
+.menu-mobile-destaque:hover {
+  background: var(--blue) !important;
+  padding-left: 1rem !important;
+}
+
+body.menu-aberto-travado {
+  overflow: hidden;
 }
 
 /* ===== Decorações florais ===== */
@@ -1302,6 +1477,14 @@ h3 {
   }
 }
 
+@media (max-width: 768px) {
+  /* Oculta no mobile as flores do canto superior direito e inferior esquerdo */
+  .deco-tr,
+  .deco-bl {
+    display: none !important;
+  }
+}
+
 @media (max-width: 640px) {
   .countdown {
     gap: .55rem;
@@ -1439,27 +1622,19 @@ h3 {
   }
 
   .menu-toggle {
+    display: flex;
+  }
+
+  .menu-desktop {
+    display: none !important;
+  }
+
+  .menu-backdrop {
     display: block;
   }
 
-  .menu {
-    display: none;
-    position: fixed;
-    top: 56px;
-    left: 1rem;
-    right: 1rem;
-    z-index: 59;
-    flex-direction: column;
-    gap: .85rem;
-    background: rgba(255, 255, 255, .98);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.2rem;
-    box-shadow: var(--shadow);
-  }
-
-  .menu.aberto {
-    display: flex;
+  .menu-mobile {
+    display: block;
   }
 
   .duas-colunas,

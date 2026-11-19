@@ -19,8 +19,31 @@
   <!-- Barra fixa que aparece ao rolar -->
   <header class="topbar" id="topbar">
     <a href="#inicio" class="topbar-logo" id="topLogo">A &amp; D</a>
-    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">☰</button>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span class="hamb-box">
+        <span class="hamb-line"></span>
+        <span class="hamb-line"></span>
+        <span class="hamb-line"></span>
+      </span>
+    </button>
   </header>
+
+  <!-- Backdrop e Menu Mobile -->
+  <div class="menu-backdrop" id="menuBackdrop" aria-hidden="true"></div>
+  <nav class="menu-mobile" id="menuMobile" aria-label="Menu de navegação" aria-hidden="true">
+    <div class="menu-mobile-topo">
+      <span class="menu-mobile-marca">A &amp; D</span>
+      <button class="menu-mobile-fechar" id="menuMobileFechar" aria-label="Fechar menu">&times;</button>
+    </div>
+    <div class="menu-mobile-links">
+      <a href="#inicio"><span class="menu-mobile-dot">•</span> Início</a>
+      <a href="#casal"><span class="menu-mobile-dot">•</span> O Casal</a>
+      <a href="#padrinhos"><span class="menu-mobile-dot">•</span> Padrinhos</a>
+      <a href="#cerimonia"><span class="menu-mobile-dot">•</span> Cerimônia &amp; Recepção</a>
+      <a href="#presentes"><span class="menu-mobile-dot">•</span> Lista de Presentes</a>
+      <a href="#presenca" class="menu-mobile-destaque">Confirmar Presença</a>
+    </div>
+  </nav>
 
   <!-- ===== APRESENTAÇÃO ===== -->
   <section class="home" id="inicio">
@@ -87,7 +110,7 @@
       </div>
     </div>
 
-    <nav class="menu" id="menu">
+    <nav class="menu menu-desktop" id="menuDesktop">
       <a href="#inicio">Home</a>
       <a href="#casal">O casal</a>
       <a href="#padrinhos" id="menuPadrinhos">Padrinhos</a>
@@ -169,9 +192,9 @@
     <h2>Lista de Presentes</h2>
     <img src="img/floral-divisor.svg" class="divisor" alt="" aria-hidden="true" />
     <div class="texto">
-      <p>A sua presença é o nosso maior presente! Mas, se desejar nos abençoar na construção do nosso novo lar, sinta-se
-        à vontade para escolher um presente abaixo. Todo o carinho recebido será transformado em cada cantinho do nosso
-        começo, com total comodidade e segurança.</p>
+      <p>A sua presença é o nosso maior presente! Mas, se desejar nos abençoar nessa nova etapa e em nossos estudos no
+        exterior, sinta-se à vontade para escolher um item abaixo. Cada gesto de carinho nos acompanhará nessa nova
+        jornada.</p>
     </div>
 
     <div class="lista-topo">
@@ -196,7 +219,7 @@
       <button class="filtro ativo" data-cat="todos">Todos</button>
       <button class="filtro" data-cat="casa">Casa</button>
       <button class="filtro" data-cat="cozinha">Cozinha</button>
-      <button class="filtro" data-cat="cotas">Cotas</button>
+      <button class="filtro" data-cat="cotas">Divididos em Partes</button>
       <button class="filtro" data-cat="viagem">Lua de Mel</button>
     </div>
 

@@ -19,12 +19,11 @@ const CONFIG = {
 
   // ---- Textos (cada item da lista é um parágrafo) ----
   textoBoasVindas: [
-    "<b>Criamos este site para compartilhar com vocês os detalhes do nosso casamento.</b>",
-    "Estamos muito felizes e contamos com a presença de todos no nosso grande dia! " +
-    "Não esqueça de confirmar sua presença no menu “Confirme sua presença”.",
-    "Para nos presentear, escolha qualquer item da Lista de Presentes. " +
-    "O valor é enviado via Pix diretamente para nós e vai nos ajudar a montar o nosso lar e a viver nossa lua de mel.",
-    "<b>Fiquem à vontade! Aguardamos vocês no nosso grande dia!</b>",
+    "<b>Criamos este site com muito carinho para compartilhar com vocês cada detalhe do nosso casamento.</b>",
+    "Estamos muito felizes e com o coração grato por viver esse momento tão especial cercados de pessoas queridas.",
+    "Logo após o casamento, daremos início a um grande sonho: estamos de mudança para estudarmos fora do Brasil! " +
+    "Por conta disso, preparamos nossa lista de presentes de forma prática, com itens e lembranças simbólicas para quem desejar nos abençoar nessa nova fase de estudos e vida a dois.",
+    "A presença de vocês é o nosso maior presente! Não deixem de <b>confirmar sua presença</b> para celebrarmos juntos esse grande dia.",
   ],
   textoCasal: [
     "Histórias de amor existem e, às vezes, nem nós mesmos acreditamos em todo o tempo que já estamos juntos.",
@@ -71,7 +70,7 @@ const PRESENTES = [
   // ---- Destaques variados / Sugestão dos noivos ----
   {
     id: "lua-de-mel",
-    nome: "Lua de Mel — Chalé Aconchegante na Serra",
+    nome: "Lua de Mel",
     descricao: "Ajude os noivos com uma parte da nossa sonhada viagem de lua de mel em um chalé romântico e acolhedor.",
     imagem: "img/chale-aconchegante.jpg",
     valor: 3000,
@@ -89,7 +88,7 @@ const PRESENTES = [
   {
     id: "geladeira",
     nome: "Geladeira Frost Free",
-    descricao: "Ajude-nos com uma cota para a geladeira da nossa cozinha nova.",
+    descricao: "Ajude com uma parte da geladeira da nossa cozinha nova.",
     imagem: "img/geladeira.jpg",
     valor: 2500,
     cotas: 5,
@@ -122,7 +121,7 @@ const PRESENTES = [
   {
     id: "smart-tv",
     nome: "Smart TV 50 polegadas",
-    descricao: "Cota para nossa TV de 50 polegadas e muitas sessões de cinema em casa.",
+    descricao: "Contribuição para nossa TV de 50 polegadas e muitas sessões de cinema a dois.",
     imagem: "img/smart-tv.jpg",
     valor: 1800,
     cotas: 4,
@@ -139,8 +138,8 @@ const PRESENTES = [
   },
   {
     id: "toalhas",
-    nome: "Jogo de Toalhas de Banho (Algodão Egípcio)",
-    descricao: "Toalhas macias e felpudas em algodão egípcio para o nosso banheiro.",
+    nome: "Jogo de Toalhas de Banho",
+    descricao: "Toalhas macias e felpudas para o nosso banheiro.",
     imagem: "img/toalhas.jpg",
     valor: 140,
     limite: 6,
@@ -149,7 +148,7 @@ const PRESENTES = [
   {
     id: "maquina-lavar",
     nome: "Máquina de Lavar Roupas",
-    descricao: "Cota para a lavadora que vai facilitar a rotina do nosso novo lar.",
+    descricao: "Ajude com uma parte da lavadora para facilitar a nossa rotina.",
     imagem: "img/maquina-lavar.jpg",
     valor: 1600,
     cotas: 4,
@@ -174,6 +173,15 @@ const PRESENTES = [
     categoria: "casa",
   },
   {
+    id: "ventilador-giratorio",
+    nome: "Ventilador Giratório",
+    descricao: "Ventilador potente, silencioso e giratório para manter o ambiente sempre fresco.",
+    imagem: "img/ventilador-giratorio.jpg",
+    valor: 200,
+    limite: 6,
+    categoria: "casa",
+  },
+  {
     id: "jantar-20",
     nome: "Jogo de Pratos (20 peças)",
     descricao: "Conjunto de pratos de porcelana com 20 peças para o dia a dia e pequenos jantares.",
@@ -193,7 +201,7 @@ const PRESENTES = [
   {
     id: "sofa",
     nome: "Sofá Retrátil",
-    descricao: "Cota para o sofá confortável que vai receber vocês na nossa sala.",
+    descricao: "Contribuição para o sofá confortável que vai acolher vocês quando forem nos visitar.",
     imagem: "img/sofa.jpg",
     valor: 2000,
     cotas: 5,
@@ -218,7 +226,7 @@ const PRESENTES = [
   {
     id: "colchao-queen",
     nome: "Colchão Queen Size",
-    descricao: "Cota para garantir todo o conforto do nosso quarto novo.",
+    descricao: "Ajude com uma parte para garantir o descanso e conforto do casal.",
     imagem: "img/colchao.jpg",
     valor: 1800,
     cotas: 3,
