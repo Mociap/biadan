@@ -287,36 +287,176 @@ h3 {
   margin-top: .25rem;
 }
 
+/* ===== Flip Countdown (Efeito Folha de Papel 3D) ===== */
 .countdown {
   display: flex;
   justify-content: center;
-  gap: .85rem;
-  flex-wrap: wrap;
-  margin: 0 auto 2rem;
+  align-items: center;
+  gap: .95rem;
+  margin: 0 auto 2.2rem;
+  padding: .3rem .5rem;
 }
 
-.countdown div {
-  min-width: 70px;
-  padding: .55rem .7rem;
-  background: rgba(255, 255, 255, .8);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(95, 85, 75, .04);
+.flip-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
 }
 
-.countdown strong {
-  display: block;
-  font-size: 1.35rem;
+.flip-card {
+  position: relative;
+  width: 72px;
+  height: 80px;
+  perspective: 450px;
+  background: transparent;
+  font-family: var(--serif);
   font-weight: 700;
-  color: var(--taupe-dark);
-  line-height: 1.1;
+  font-size: 2.1rem;
+  color: var(--blue-dark);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(78, 115, 150, .14), 0 2px 6px rgba(95, 85, 75, .08);
+  user-select: none;
 }
 
-.countdown span {
+.flip-card[data-digits="3"] {
+  width: 82px;
+  font-size: 1.8rem;
+}
+
+/* Vinco horizontal central que simula a dobra do papel */
+.flip-card::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(95, 85, 75, .18);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .75);
+  z-index: 25;
+}
+
+/* Metades estáticas (superior e inferior) */
+.flip-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.flip-top {
+  top: 0;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid rgba(227, 222, 214, .9);
+  border-bottom: none;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f4ed 100%);
+}
+
+.flip-bottom {
+  bottom: 0;
+  border-radius: 0 0 8px 8px;
+  border: 1px solid rgba(227, 222, 214, .9);
+  border-top: none;
+  background: linear-gradient(180deg, #f3efe6 0%, #ffffff 100%);
+}
+
+/* Centralização do número nas metades de 80px de altura */
+.flip-half .flip-num,
+.flip-leaf-front .flip-num,
+.flip-leaf-back .flip-num {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  line-height: 1;
+}
+
+.flip-bottom .flip-num,
+.flip-leaf-back .flip-num {
+  top: -40px;
+}
+
+/* Folha móvel que se desprende e vira para baixo */
+.flip-leaf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  transform-origin: bottom center;
+  transform-style: preserve-3d;
+  z-index: 15;
+  pointer-events: none;
+}
+
+.flip-leaf-front,
+.flip-leaf-back {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  border: 1px solid rgba(227, 222, 214, .9);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.flip-leaf-front {
+  top: 0;
+  border-radius: 8px 8px 0 0;
+  border-bottom: none;
+  background: linear-gradient(180deg, #ffffff 0%, #f6f2ea 100%);
+  transform: rotateX(0deg);
+}
+
+.flip-leaf-back {
+  border-radius: 0 0 8px 8px;
+  border-top: none;
+  background: linear-gradient(180deg, #efeae0 0%, #ffffff 100%);
+  transform: rotateX(180deg);
+}
+
+/* Sombra suave de passagem de página */
+.flip-leaf-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(95, 85, 75, .22) 100%);
+  opacity: 0;
+  transition: opacity .45s;
+}
+
+.flip-card.virando .flip-leaf-front::after {
+  opacity: 1;
+}
+
+.flip-card.virando .flip-leaf {
+  animation: virarFolha .55s cubic-bezier(.37, .01, .24, 1) forwards;
+}
+
+@keyframes virarFolha {
+  0% {
+    transform: rotateX(0deg);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+
+.flip-label {
   font-size: .68rem;
-  letter-spacing: .14em;
+  letter-spacing: .15em;
   text-transform: uppercase;
   color: var(--muted);
+  font-weight: 600;
 }
 
 .menu {
@@ -1023,6 +1163,38 @@ h3 {
 }
 
 @media (max-width: 640px) {
+  .countdown {
+    gap: .55rem;
+    padding: .2rem 0;
+  }
+
+  .flip-card {
+    width: 60px;
+    height: 68px;
+    font-size: 1.7rem;
+  }
+
+  .flip-card[data-digits="3"] {
+    width: 70px;
+    font-size: 1.5rem;
+  }
+
+  .flip-half .flip-num,
+  .flip-leaf-front .flip-num,
+  .flip-leaf-back .flip-num {
+    height: 68px;
+  }
+
+  .flip-bottom .flip-num,
+  .flip-leaf-back .flip-num {
+    top: -34px;
+  }
+
+  .flip-label {
+    font-size: .62rem;
+    letter-spacing: .1em;
+  }
+
   .secao {
     padding: 3.6rem .85rem;
   }
@@ -1146,6 +1318,36 @@ h3 {
 }
 
 @media (max-width: 380px) {
+  .countdown {
+    gap: .35rem;
+  }
+
+  .flip-card {
+    width: 52px;
+    height: 60px;
+    font-size: 1.45rem;
+  }
+
+  .flip-card[data-digits="3"] {
+    width: 62px;
+    font-size: 1.3rem;
+  }
+
+  .flip-half .flip-num,
+  .flip-leaf-front .flip-num,
+  .flip-leaf-back .flip-num {
+    height: 60px;
+  }
+
+  .flip-bottom .flip-num,
+  .flip-leaf-back .flip-num {
+    top: -30px;
+  }
+
+  .flip-label {
+    font-size: .56rem;
+  }
+
   .grade {
     gap: .55rem;
   }
@@ -1167,3 +1369,10 @@ h3 {
     padding: .44rem .35rem;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .flip-card.virando .flip-leaf {
+    animation: none;
+  }
+}
+

@@ -70,19 +70,79 @@
   $("btnComoChegar").href = urlMaps;
   $("btnWaze").href = `https://waze.com/ul?q=${qMapa}&navigate=yes`;
 
-  /* Contagem regressiva */
-  function contagem() {
+  /* Contagem regressiva (Efeito Folha de Papel 3D / Flip Card) */
+  function criarVirador(cardId) {
+    const card = $(cardId);
+    if (!card) return () => {};
+    const topNum = card.querySelector(".flip-top .flip-num");
+    const bottomNum = card.querySelector(".flip-bottom .flip-num");
+    const leaf = card.querySelector(".flip-leaf");
+    const frontNum = card.querySelector(".flip-leaf-front .flip-num");
+    const backNum = card.querySelector(".flip-leaf-back .flip-num");
+
+    let valorAtual = null;
+
+    return function atualizar(novoValor, forcar) {
+      const str = String(novoValor).padStart(2, "0");
+      if (str.length > 2) {
+        card.setAttribute("data-digits", "3");
+      } else {
+        card.removeAttribute("data-digits");
+      }
+
+      if (valorAtual === null || forcar) {
+        valorAtual = str;
+        topNum.textContent = str;
+        bottomNum.textContent = str;
+        frontNum.textContent = str;
+        backNum.textContent = str;
+        return;
+      }
+
+      if (valorAtual === str) return;
+
+      const valorAntigo = valorAtual;
+      valorAtual = str;
+
+      topNum.textContent = str;
+      bottomNum.textContent = valorAntigo;
+      frontNum.textContent = valorAntigo;
+      backNum.textContent = str;
+
+      card.classList.remove("virando");
+      void card.offsetWidth; // Força reflow para reiniciar animação CSS suave
+      card.classList.add("virando");
+
+      const onEnd = () => {
+        card.classList.remove("virando");
+        bottomNum.textContent = str;
+        frontNum.textContent = str;
+        leaf.removeEventListener("animationend", onEnd);
+      };
+      leaf.addEventListener("animationend", onEnd, { once: true });
+    };
+  }
+
+  const virarDias = criarVirador("flipDias");
+  const virarHoras = criarVirador("flipHoras");
+  const virarMin = criarVirador("flipMin");
+  const virarSeg = criarVirador("flipSeg");
+
+  function contagem(forcar) {
     let diff = Math.max(0, data - new Date());
     const d = Math.floor(diff / 864e5); diff -= d * 864e5;
     const h = Math.floor(diff / 36e5); diff -= h * 36e5;
     const m = Math.floor(diff / 6e4); diff -= m * 6e4;
-    $("cdDias").textContent = d;
-    $("cdHoras").textContent = h;
-    $("cdMin").textContent = m;
-    $("cdSeg").textContent = Math.floor(diff / 1e3);
+    const s = Math.floor(diff / 1e3);
+
+    virarDias(d, forcar);
+    virarHoras(h, forcar);
+    virarMin(m, forcar);
+    virarSeg(s, forcar);
   }
-  contagem();
-  setInterval(contagem, 1000);
+
+  contagem(true);
+  setInterval(() => contagem(false), 1000);
 
   /* Barra fixa ao rolar + menu mobile */
   window.addEventListener("scroll", () => {

@@ -37,11 +37,54 @@
     <p class="date" id="dataTexto"></p>
     <img src="img/floral-divisor.svg" class="divisor" alt="" aria-hidden="true" />
 
-    <div class="countdown">
-      <div><strong id="cdDias">0</strong><span>dias</span></div>
-      <div><strong id="cdHoras">0</strong><span>horas</span></div>
-      <div><strong id="cdMin">0</strong><span>min</span></div>
-      <div><strong id="cdSeg">0</strong><span>seg</span></div>
+    <div class="countdown" id="countdown" aria-label="Contagem regressiva para o casamento">
+      <div class="flip-item">
+        <div class="flip-card" id="flipDias">
+          <div class="flip-half flip-top"><span class="flip-num">00</span></div>
+          <div class="flip-half flip-bottom"><span class="flip-num">00</span></div>
+          <div class="flip-leaf">
+            <div class="flip-leaf-front"><span class="flip-num">00</span></div>
+            <div class="flip-leaf-back"><span class="flip-num">00</span></div>
+          </div>
+        </div>
+        <span class="flip-label">dias</span>
+      </div>
+
+      <div class="flip-item">
+        <div class="flip-card" id="flipHoras">
+          <div class="flip-half flip-top"><span class="flip-num">00</span></div>
+          <div class="flip-half flip-bottom"><span class="flip-num">00</span></div>
+          <div class="flip-leaf">
+            <div class="flip-leaf-front"><span class="flip-num">00</span></div>
+            <div class="flip-leaf-back"><span class="flip-num">00</span></div>
+          </div>
+        </div>
+        <span class="flip-label">horas</span>
+      </div>
+
+      <div class="flip-item">
+        <div class="flip-card" id="flipMin">
+          <div class="flip-half flip-top"><span class="flip-num">00</span></div>
+          <div class="flip-half flip-bottom"><span class="flip-num">00</span></div>
+          <div class="flip-leaf">
+            <div class="flip-leaf-front"><span class="flip-num">00</span></div>
+            <div class="flip-leaf-back"><span class="flip-num">00</span></div>
+          </div>
+        </div>
+        <span class="flip-label">min</span>
+      </div>
+
+      <div class="flip-item">
+        <div class="flip-card" id="flipSeg">
+          <div class="flip-half flip-top"><span class="flip-num">00</span></div>
+          <div class="flip-half flip-bottom"><span class="flip-num">00</span></div>
+          <div class="flip-leaf">
+            <div class="flip-leaf-front"><span class="flip-num">00</span></div>
+            <div class="flip-leaf-back"><span class="flip-num">00</span></div>
+          </div>
+        </div>
+        <span class="flip-label">seg</span>
+      </div>
     </div>
 
     <nav class="menu" id="menu">
@@ -94,7 +137,8 @@
       </div>
       <div class="cerimonia-item">
         <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-          <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="none" stroke="currentColor" stroke-width="1.7" />
+          <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11Z" fill="none" stroke="currentColor"
+            stroke-width="1.7" />
           <circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.7" />
         </svg>
         <div>
@@ -125,7 +169,9 @@
     <h2>Lista de Presentes</h2>
     <img src="img/floral-divisor.svg" class="divisor" alt="" aria-hidden="true" />
     <div class="texto">
-      <p>A sua presença é o nosso maior presente! Mas, se desejar nos abençoar na construção do nosso novo lar, sinta-se à vontade para escolher um mimo abaixo. Todo o carinho recebido será transformado em cada cantinho do nosso começo, com total comodidade e segurança.</p>
+      <p>A sua presença é o nosso maior presente! Mas, se desejar nos abençoar na construção do nosso novo lar, sinta-se
+        à vontade para escolher um presente abaixo. Todo o carinho recebido será transformado em cada cantinho do nosso
+        começo, com total comodidade e segurança.</p>
     </div>
 
     <div class="lista-topo">
