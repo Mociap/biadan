@@ -73,7 +73,7 @@
   /* Contagem regressiva (Efeito Folha de Papel 3D / Flip Card) */
   function criarVirador(cardId) {
     const card = $(cardId);
-    if (!card) return () => {};
+    if (!card) return () => { };
     const topNum = card.querySelector(".flip-top .flip-num");
     const bottomNum = card.querySelector(".flip-bottom .flip-num");
     const leaf = card.querySelector(".flip-leaf");
@@ -358,9 +358,9 @@
   $("btnCarrinho").addEventListener("click", () => abrirModal(1));
   $("btnCarrinhoFlutuante").addEventListener("click", () => abrirModal(1));
 
-  /* ---------- Modal (Carrinho -> Identificação) ---------- */
+  /* ---------- Modal (Carrinho -> Dados -> Pix -> Conclusão) ---------- */
   function mostrarEtapa(n) {
-    const etapas = ["etapaCarrinho", "etapaDados"];
+    const etapas = ["etapaCarrinho", "etapaDados", "etapaPix", "etapaObrigado"];
     etapas.forEach((id, i) => $(id).classList.toggle("oculto", i !== n - 1));
     $("modal").querySelector(".modal-box").scrollTop = 0;
   }
@@ -441,10 +441,11 @@
   });
   $("voltarCarrinho").addEventListener("click", () => { renderCarrinho(); mostrarEtapa(1); });
 
-  /* ---------- Pagar com PagBank ---------- */
-  let enviandoPagamento = false;
-  $("btnPagar").addEventListener("click", async () => {
-    if (enviandoPagamento) return;
+  /* ---------- Pagamento via Pix ---------- */
+  let ultimoTotalPix = 0;
+  let ultimoResumoPix = "";
+
+  $("btnGerarPix").addEventListener("click", () => {
     const nome = $("nomeConvidado").value.trim();
     if (nome.length < 2) {
       $("nomeConvidado").focus();
@@ -452,54 +453,110 @@
       return;
     }
 
-    const total = totalDoCarrinho();
-    if (total < 1) { toast("O valor mínimo é R$ 1,00."); return; }
+    ultimoTotalPix = totalDoCarrinho();
+    if (ultimoTotalPix < 1) {
+      toast("O valor mínimo é R$ 1,00.");
+      return;
+    }
 
-    const btn = $("btnPagar");
     const recado = $("recado").value.trim();
     const resumo = carrinho
       .map((it) => `${it.qtd > 1 ? it.qtd + "x " : ""}${it.nome}`)
       .join(", ");
-    const qtdTotal = carrinho.reduce((s, it) => s + it.qtd, 0);
-    const itens = carrinho.map((it) => ({
-      id: it.id,
-      nome: it.nome,
-      qtd: it.qtd,
-      unitario: it.unitario,
-    }));
-    const baseUrl = window.location.href.split("#")[0].split("?")[0];
+    ultimoResumoPix = resumo;
 
-    enviandoPagamento = true;
-    btn.disabled = true;
-    btn.textContent = "Redirecionando ao PagBank...";
+    const pixData = CONFIG.pix || {};
+    const chave = pixData.chave || "";
+    const nomeRecebedor = pixData.nomeRecebedor || `${CONFIG.noiva} e ${CONFIG.noivo}`;
+
+    // Preenche os dados visuais na tela
+    $("totalPix").textContent = brl(ultimoTotalPix);
+    $("itensResumoPix").textContent = resumo;
+    if ($("pixValorDica")) $("pixValorDica").textContent = brl(ultimoTotalPix);
+
+    // Preenche o card da Chave Pix direta
+    $("chavePixTexto").textContent = chave;
+    $("chavePixTipo").textContent = `Tipo: ${pixData.tipoChave || "Chave Pix"}`;
+    $("chavePixTitular").textContent = `Titular: ${nomeRecebedor}`;
+    if (pixData.banco) {
+      $("chavePixBanco").textContent = `· Banco: ${pixData.banco}`;
+      $("chavePixBanco").classList.remove("oculto");
+    } else {
+      $("chavePixBanco").classList.add("oculto");
+    }
+
+    // Exibe ou oculta o link direto do WhatsApp
+    if (CONFIG.whatsapp) {
+      const numLimpo = String(CONFIG.whatsapp).replace(/\D/g, "");
+      const ddd = numLimpo.slice(2, 4);
+      const tel = numLimpo.slice(4);
+      const telFormatado = `(${ddd}) ${tel.slice(0, 5)}-${tel.slice(5)}`;
+      if ($("whatsTextoNumero")) $("whatsTextoNumero").textContent = telFormatado;
+      if ($("linkWhatsDireto")) $("linkWhatsDireto").href = `https://wa.me/${numLimpo}`;
+      if ($("pixWhatsContato")) $("pixWhatsContato").classList.remove("oculto");
+    } else {
+      if ($("pixWhatsContato")) $("pixWhatsContato").classList.add("oculto");
+    }
+
+    // Registra intenção de presente na planilha Google Sheets em segundo plano
+    enviarParaPlanilha({
+      tipo: "presente_pix",
+      nome,
+      recado,
+      resumo,
+      qtdTotal: carrinho.reduce((s, it) => s + it.qtd, 0),
+      total: ultimoTotalPix,
+      itens: carrinho.map((it) => ({ id: it.id, nome: it.nome, qtd: it.qtd, unitario: it.unitario })),
+    }).catch(() => {
+      // Falha silenciosa de rede não bloqueia o convidado de pagar
+    });
+
+    mostrarEtapa(3);
+  });
+
+  // Copiar Chave Pix
+  $("btnCopiarChave").addEventListener("click", async () => {
+    const chave = (CONFIG.pix && CONFIG.pix.chave) || "";
+    if (!chave) return;
     try {
-      const res = await enviarParaPlanilha({
-        tipo: "presente",
-        nome,
-        recado,
-        resumo,
-        qtdTotal,
-        total,
-        itens,
-        redirectUrl: baseUrl,
-      });
-      if (!res || !res.ok || !res.payUrl) {
-        toast((res && res.error) || "Não foi possível gerar o pagamento no PagBank.");
-        return;
-      }
+      await navigator.clipboard.writeText(chave);
+    } catch {
+      const temp = document.createElement("input");
+      temp.value = chave;
+      document.body.appendChild(temp);
+      temp.select();
+      document.execCommand("copy");
+      document.body.removeChild(temp);
+    }
+
+    const btn = $("btnCopiarChave");
+    const span = btn.querySelector("span");
+    const originalText = span ? span.textContent : btn.textContent;
+    btn.classList.add("copiado");
+    if (span) span.textContent = "✓ Chave copiada!";
+    toast("Chave Pix copiada! Cole no aplicativo do seu banco.");
+    setTimeout(() => {
+      btn.classList.remove("copiado");
+      if (span) span.textContent = originalText;
+    }, 3000);
+  });
+
+  // Voltar da etapa 3 para a etapa 2
+  $("voltarDados").addEventListener("click", () => mostrarEtapa(2));
+
+  // Botão Concluir na tela do Pix (Avança para Agradecimento)
+  if ($("btnConcluirPix")) {
+    $("btnConcluirPix").addEventListener("click", () => {
       carrinho.length = 0;
       $("nomeConvidado").value = "";
       $("recado").value = "";
       atualizarBotaoCarrinho();
-      window.location.href = res.payUrl;
-    } catch {
-      toast("Não foi possível conectar ao pagamento agora. Tente novamente.");
-    } finally {
-      enviandoPagamento = false;
-      btn.disabled = false;
-      btn.textContent = "Pagar com PagBank";
-    }
-  });
+      mostrarEtapa(4);
+    });
+  }
+
+  // Concluir no botão da etapa 4
+  $("btnConcluir").addEventListener("click", fecharModal);
 
   /* ---------- Valores Avulsos (mínimo de R$ 150) ---------- */
   const inputAvulso = $("valorAvulso");
@@ -582,33 +639,6 @@
       toast(`Contribuição de ${brl(val)} adicionada ao seu carrinho!`);
     });
   }
-
-  async function verificarRetornoPagBank() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get("presente") !== "retorno") return;
-    const ref = params.get("ref") || "";
-    if (window.history && window.history.replaceState) {
-      window.history.replaceState({}, document.title, window.location.pathname + window.location.hash);
-    }
-    if (CONFIG.apiUrl && ref) {
-      try {
-        const resp = await fetch(`${CONFIG.apiUrl}?confirmar=${encodeURIComponent(ref)}`);
-        const data = await resp.json();
-        if (data && data.cotas) {
-          cotasInfo = data.cotas;
-          renderLista();
-        }
-        if (data && data.pago) {
-          toast("Pagamento confirmado! Muito obrigado pelo presente!");
-          return;
-        }
-      } catch {
-        // Segue com mensagem neutra se estiver offline
-      }
-    }
-    toast("Obrigado! Assim que o PagBank confirmar o pagamento, seu presente será registrado.");
-  }
-  verificarRetornoPagBank();
 
   /* ---------- Confirmação de Presença (RSVP) ---------- */
   for (let i = 1; i <= 10; i++) $("rAdultos").add(new Option(i, i));

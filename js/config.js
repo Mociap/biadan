@@ -53,8 +53,19 @@ const CONFIG = {
     { nomes: "Samuel", foto: "img/Padrinhos/Samuel.jpeg" },
   ],
 
-  // ---- Banco de dados e PagBank (Google Sheets + Apps Script) ----
-  // O token do PagBank fica protegido nas Propriedades do script em db/Code.gs.
+  // ---- Dados do Pix (quem recebe o valor dos presentes) ----
+  pix: {
+    chave: "ca2c9d8d-4def-424d-99f6-d955c8201283",       // Chave Pix aleatória
+    tipoChave: "Chave Aleatória",                         // Rótulo exibido para o convidado
+    nomeRecebedor: "Mozer Crizóstomo",                    // Nome do titular da conta
+    banco: "PagSeguro",                                   // Nome do banco exibido no card
+    cidade: "BRASIL",                                     // Padrão interno BACEN (não é exibido na tela)
+  },
+
+  // ---- WhatsApp para os convidados avisarem que presentearam (com comprovante) ----
+  whatsapp: "5583993652398",
+
+  // ---- Banco de dados (Google Sheets + Apps Script) ----
   apiUrl: "https://script.google.com/macros/s/AKfycbySG7Ea1dt1u4F9SO7txLmm9VADqdRPO8GuOWvfkzPrvTymkx3KGRL4lSxegIYAFpQ52A/exec",
 };
 

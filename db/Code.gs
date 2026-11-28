@@ -455,23 +455,40 @@ function doPost(e) {
       return jsonResposta({ ok: true });
     }
 
-    // 2. Criação de Checkout no PagBank (só grava em Presentes quando pago)
-    if (body.tipo === "presente") {
-      const referenceId = "BIADAN-" + agora.getTime() + "-" + Math.floor(Math.random() * 1000);
-      const checkout = criarCheckoutPagBank(body, referenceId);
-      if (!checkout.ok) {
-        return jsonResposta({
-          ok: false,
-          status: checkout.status || 500,
-          error: checkout.error,
-        });
+    // 2. Registro de Presente via Pix (direto na planilha, sem depender de gateway)
+    if (body.tipo === "presente_pix" || body.tipo === "presente") {
+      const nome = textoSeguro(body.nome, 80);
+      const resumo = textoSeguro(body.resumo, 400);
+      const qtdTotal = inteiroEntre(body.qtdTotal, 1, 999, 1);
+      const total = Number(body.total) || 0;
+      const recado = textoSeguro(body.recado, 400);
+      const itensStr = JSON.stringify(body.itens || []);
+
+      let sheetPres = ss.getSheetByName(ABA_PRESENTES);
+      if (!sheetPres) {
+        sheetPres = ss.insertSheet(ABA_PRESENTES);
+        sheetPres.appendRow([
+          "Data/Hora",
+          "Quem comprou",
+          "Presente",
+          "Quantidade",
+          "Valor (R$)",
+          "Recado dos noivos",
+          "Status Pagamento",
+          "Detalhes / IDs",
+        ]);
       }
-      return jsonResposta({
-        ok: true,
-        payUrl: checkout.payUrl,
-        checkoutId: checkout.checkoutId,
-        referenceId,
-      });
+      sheetPres.appendRow([
+        agora,
+        nome,
+        resumo,
+        qtdTotal,
+        total,
+        recado,
+        "Aguardando conferência Pix",
+        itensStr,
+      ]);
+      return jsonResposta({ ok: true });
     }
 
     // 3. Webhook de pagamento do PagBank (payment_notification_urls)

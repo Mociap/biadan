@@ -75,3 +75,6 @@ const Pix = (() => {
   return { gerar };
 })();
 
+if (typeof window !== "undefined") window.Pix = Pix;
+if (typeof module !== "undefined" && module.exports) module.exports = Pix;
+
